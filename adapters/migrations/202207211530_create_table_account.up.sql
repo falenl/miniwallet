@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS account (
+    id TEXT PRIMARY KEY,
+    customer_id TEXT NOT NULL UNIQUE,
+    token TEXT NOT NULL UNIQUE
+);
