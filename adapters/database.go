@@ -30,7 +30,6 @@ var migrations embed.FS
 
 //ensureSchema creates database schema needed to run the application
 func ensureSchema(db *sql.DB) error {
-	var schemaVersion uint = 202207211530
 	sourceInstance, err := httpfs.New(http.FS(migrations), "migrations")
 	if err != nil {
 		return fmt.Errorf("invalid source instance, %w", err)
@@ -44,7 +43,7 @@ func ensureSchema(db *sql.DB) error {
 	if err != nil {
 		return fmt.Errorf("failed to initialize migrate instance, %w", err)
 	}
-	err = m.Migrate(schemaVersion)
+	err = m.Up()
 	if err != nil && err != migrate.ErrNoChange {
 		return err
 	}

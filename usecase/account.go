@@ -7,22 +7,22 @@ import (
 	"github.com/google/uuid"
 )
 
-type accountHandler struct {
+type accountService struct {
 	accountRepo     AccountRepository
 	customerService CustomerService
 }
 
-//NewCreateAccountHandler returns createAccountHandler to create account usecase
+//NewAccountService returns accountService to create account usecase
 //accepts AccountRepository and CustomerService as parameters
-func NewAccountHandler(accountRepo AccountRepository, customerService CustomerService) *accountHandler {
-	return &accountHandler{
+func NewAccountService(accountRepo AccountRepository, customerService CustomerService) *accountService {
+	return &accountService{
 		accountRepo:     accountRepo,
 		customerService: customerService,
 	}
 }
 
-//Handle returns a token string and error if any.
-func (c *accountHandler) Create(ctx context.Context, customerID uuid.UUID) (string, error) {
+//Create returns a token string and error if any.
+func (c *accountService) Create(ctx context.Context, customerID uuid.UUID) (string, error) {
 	if customerID == uuid.Nil {
 		return "", errs.NewInvalidRequest("invalid customer_xid")
 	}
@@ -37,6 +37,6 @@ func (c *accountHandler) Create(ctx context.Context, customerID uuid.UUID) (stri
 	return token, nil
 }
 
-func (c *accountHandler) verifyCustomer(ctx context.Context, customerID uuid.UUID) bool {
+func (c *accountService) verifyCustomer(ctx context.Context, customerID uuid.UUID) bool {
 	return c.customerService.Verify(ctx, customerID)
 }

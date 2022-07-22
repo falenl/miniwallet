@@ -23,6 +23,10 @@ func NewExpected(msg string) *Error {
 	return New(http.StatusOK, msg)
 }
 
+func NewUnauthorized(msg string) *Error {
+	return New(http.StatusUnauthorized, msg)
+}
+
 func New(statusCode int, msg string) *Error {
 	return &Error{
 		StatusCode: statusCode,

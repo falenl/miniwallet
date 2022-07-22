@@ -17,7 +17,7 @@ type accountHTTPHandler struct {
 	account Account
 }
 
-func New(r *mux.Router, account Account) {
+func NewAccountHandler(r *mux.Router, account Account) {
 	a := accountHTTPHandler{
 		account: account,
 	}

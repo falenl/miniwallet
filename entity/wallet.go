@@ -7,15 +7,17 @@ import (
 )
 
 const (
-	ENABLED  = "enabled"
-	DISABLED = "disabled"
+	Enabled  statusString = "enabled"
+	Disabled statusString = "disabled"
 )
+
+type statusString string
 
 type Wallet struct {
 	ID              uuid.UUID
 	AccountID       uuid.UUID
 	OwnerID         uuid.UUID
-	Status          string
+	Status          statusString
 	StatusUpdatedAt time.Time
 	Balance         int64
 }
@@ -30,5 +32,5 @@ type Transaction struct {
 }
 
 func (w *Wallet) IsDisabled() bool {
-	return w.Status == DISABLED
+	return w.Status == Disabled
 }

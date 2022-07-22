@@ -32,8 +32,12 @@ func main() {
 
 	customerService := adapters.NewCustomerService()
 	accountRepo := adapters.NewAccountRepository(db)
-	account := usecase.NewAccountHandler(accountRepo, customerService)
-	ports.New(router, account)
+	account := usecase.NewAccountService(accountRepo, customerService)
+	ports.NewAccountHandler(router, account)
+
+	walletRepo := adapters.NewWalletRepository(db)
+	wallet := usecase.NewWalletService(accountRepo, walletRepo)
+	ports.NewWalletHandler(router, wallet)
 
 	go func() {
 		c := make(chan os.Signal, 1)

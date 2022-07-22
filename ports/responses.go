@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/falenl/miniwallet/errors"
+	"github.com/google/uuid"
 )
 
 const (
@@ -23,6 +25,19 @@ type Response struct {
 type InitAccountResp struct {
 	Token string `json:"token"`
 }
+
+type WalletResp struct {
+	ID         uuid.UUID  `json:"id"`
+	OwnedBy    uuid.UUID  `json:"owned_by"`
+	Status     string     `json:"status"`
+	EnabledAt  *time.Time `json:"enabled_at,omitempty"`
+	DisabledAt *time.Time `json:"disabled_at,omitempty"`
+	Balance    int64      `json:"balance"`
+}
+
+type contextKey string
+
+var accountCtxKey = contextKey("Account ID")
 
 func JSONResponse(w http.ResponseWriter, code int, output interface{}) error {
 	response, err := json.Marshal(output)
@@ -53,7 +68,8 @@ func jsonResponse(w http.ResponseWriter, code int, output []byte) error {
 
 func HandleErrReturn(w http.ResponseWriter, errInput *errors.Error) {
 	status := StatusError
-	if errInput.StatusCode == http.StatusBadRequest {
+	if errInput.StatusCode == http.StatusBadRequest || errInput.StatusCode == http.StatusUnauthorized ||
+		errInput.StatusCode == http.StatusOK {
 		status = StatusFail
 	}
 	resp := Response{

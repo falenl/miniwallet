@@ -8,6 +8,7 @@ import (
 	context "context"
 	reflect "reflect"
 
+	entity "github.com/falenl/miniwallet/entity"
 	gomock "github.com/golang/mock/gomock"
 	uuid "github.com/google/uuid"
 )
@@ -33,6 +34,21 @@ func NewMockAccountRepository(ctrl *gomock.Controller) *MockAccountRepository {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockAccountRepository) EXPECT() *MockAccountRepositoryMockRecorder {
 	return m.recorder
+}
+
+// Authenticate mocks base method.
+func (m *MockAccountRepository) Authenticate(ctx context.Context, token string) (entity.Account, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Authenticate", ctx, token)
+	ret0, _ := ret[0].(entity.Account)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Authenticate indicates an expected call of Authenticate.
+func (mr *MockAccountRepositoryMockRecorder) Authenticate(ctx, token interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Authenticate", reflect.TypeOf((*MockAccountRepository)(nil).Authenticate), ctx, token)
 }
 
 // Create mocks base method.
@@ -85,4 +101,70 @@ func (m *MockCustomerService) Verify(ctx context.Context, customerID uuid.UUID) 
 func (mr *MockCustomerServiceMockRecorder) Verify(ctx, customerID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Verify", reflect.TypeOf((*MockCustomerService)(nil).Verify), ctx, customerID)
+}
+
+// MockWalletRepository is a mock of WalletRepository interface.
+type MockWalletRepository struct {
+	ctrl     *gomock.Controller
+	recorder *MockWalletRepositoryMockRecorder
+}
+
+// MockWalletRepositoryMockRecorder is the mock recorder for MockWalletRepository.
+type MockWalletRepositoryMockRecorder struct {
+	mock *MockWalletRepository
+}
+
+// NewMockWalletRepository creates a new mock instance.
+func NewMockWalletRepository(ctrl *gomock.Controller) *MockWalletRepository {
+	mock := &MockWalletRepository{ctrl: ctrl}
+	mock.recorder = &MockWalletRepositoryMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockWalletRepository) EXPECT() *MockWalletRepositoryMockRecorder {
+	return m.recorder
+}
+
+// Enable mocks base method.
+func (m *MockWalletRepository) Enable(ctx context.Context, wallet *entity.Wallet) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Enable", ctx, wallet)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Enable indicates an expected call of Enable.
+func (mr *MockWalletRepositoryMockRecorder) Enable(ctx, wallet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Enable", reflect.TypeOf((*MockWalletRepository)(nil).Enable), ctx, wallet)
+}
+
+// GetByAccountID mocks base method.
+func (m *MockWalletRepository) GetByAccountID(ctx context.Context, accountID string) (entity.Wallet, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetByAccountID", ctx, accountID)
+	ret0, _ := ret[0].(entity.Wallet)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetByAccountID indicates an expected call of GetByAccountID.
+func (mr *MockWalletRepositoryMockRecorder) GetByAccountID(ctx, accountID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByAccountID", reflect.TypeOf((*MockWalletRepository)(nil).GetByAccountID), ctx, accountID)
+}
+
+// Update mocks base method.
+func (m *MockWalletRepository) Update(ctx context.Context, wallet *entity.Wallet) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Update", ctx, wallet)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockWalletRepositoryMockRecorder) Update(ctx, wallet interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockWalletRepository)(nil).Update), ctx, wallet)
 }

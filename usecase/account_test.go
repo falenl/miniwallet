@@ -65,7 +65,7 @@ func TestCreateAccountHandle(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			mockAccountRepo := mock_usecase.NewMockAccountRepository(ctrl)
 			mockCustServ := mock_usecase.NewMockCustomerService(ctrl)
-			c := usecase.NewAccountHandler(mockAccountRepo, mockCustServ)
+			c := usecase.NewAccountService(mockAccountRepo, mockCustServ)
 
 			test.mockFunc(mockAccountRepo, mockCustServ, test.customerID)
 			tokenResult, err := c.Create(ctx, test.customerID)

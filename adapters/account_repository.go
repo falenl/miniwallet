@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"encoding/hex"
 
+	"github.com/falenl/miniwallet/entity"
 	"github.com/google/uuid"
 )
 
@@ -23,6 +24,10 @@ const (
 	createAccountQuery = `insert into account(id, customer_id, token) values ($1, $2, $3) 
 							ON CONFLICT (customer_id) DO UPDATE SET customer_id = excluded.customer_id 
 							RETURNING token`
+
+	getAccountQuery = `select id, customer_id, token
+						from account
+						where token = $1`
 )
 
 func (a *accountRepository) Create(ctx context.Context, customerID uuid.UUID) (string, error) {
@@ -36,6 +41,23 @@ func (a *accountRepository) Create(ctx context.Context, customerID uuid.UUID) (s
 	row.Scan(&token)
 
 	return token, nil
+}
+
+func (a *accountRepository) Authenticate(ctx context.Context, token string) (entity.Account, error) {
+
+	row := a.db.QueryRowContext(ctx, getAccountQuery, token)
+	if row.Err() != nil {
+		return entity.Account{}, row.Err()
+	}
+
+	var account entity.Account
+
+	err := row.Scan(&account.ID, &account.CustomerID, &token)
+	if err != nil {
+		return entity.Account{}, err
+	}
+
+	return account, nil
 }
 
 func generateSecureToken(length int) string {
