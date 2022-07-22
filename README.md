@@ -1,4 +1,4 @@
-# kyc Service
+# miniwallet Service
 
 ### How to run:
 
