@@ -16,6 +16,9 @@ const (
 	StatusError   = "error"
 )
 
+var accountCtxKey = contextKey("Account ID")
+
+type contextKey string
 type Response struct {
 	Status  string      `json:"status"`
 	Message string      `json:"message,omitempty"`
@@ -35,9 +38,31 @@ type WalletResp struct {
 	Balance    int64      `json:"balance"`
 }
 
-type contextKey string
+type DepositResp struct {
+	Deposit DepositDetailResp `json:"deposit"`
+}
 
-var accountCtxKey = contextKey("Account ID")
+type DepositDetailResp struct {
+	ID          uuid.UUID `json:"id"`
+	DepositedBy uuid.UUID `json:"deposited_by"`
+	Status      string    `json:"status"`
+	DepositedAt time.Time `json:"deposited_at"`
+	Amount      int64     `json:"amount"`
+	RefID       uuid.UUID `json:"reference_id"`
+}
+
+type WithdrawalResp struct {
+	WithDrawal WithdrawalDetailResp `json:"witdrawal"`
+}
+
+type WithdrawalDetailResp struct {
+	ID          uuid.UUID `json:"id"`
+	WithdrawnBy uuid.UUID `json:"withdrawn_by"`
+	Status      string    `json:"status"`
+	WithdrawnAt time.Time `json:"withdrawn_at"`
+	Amount      int64     `json:"amount"`
+	RefID       uuid.UUID `json:"reference_id"`
+}
 
 func JSONResponse(w http.ResponseWriter, code int, output interface{}) error {
 	response, err := json.Marshal(output)

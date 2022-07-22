@@ -22,15 +22,6 @@ type Wallet struct {
 	Balance         int64
 }
 
-type Transaction struct {
-	ID        uuid.UUID
-	Amount    int64
-	RefID     uuid.UUID
-	Wallet    Wallet
-	UpdatedBy uuid.UUID
-	UpdatedAt time.Time
-}
-
 func (w *Wallet) IsDisabled() bool {
 	return w.Status == Disabled
 }

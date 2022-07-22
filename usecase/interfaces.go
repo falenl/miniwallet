@@ -23,3 +23,8 @@ type WalletRepository interface {
 	GetByAccountID(ctx context.Context, accountID string) (entity.Wallet, error)
 	Update(ctx context.Context, wallet *entity.Wallet) error
 }
+
+type TransactionRepository interface {
+	Deposit(ctx context.Context, trx *entity.Transaction) error
+	Withdraw(ctx context.Context, trx *entity.Transaction) error
+}

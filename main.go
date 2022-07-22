@@ -37,7 +37,10 @@ func main() {
 
 	walletRepo := adapters.NewWalletRepository(db)
 	wallet := usecase.NewWalletService(accountRepo, walletRepo)
-	ports.NewWalletHandler(router, wallet)
+
+	trxRepo := adapters.NewTransactionRepository(db)
+	trx := usecase.NewTransactionService(wallet, trxRepo)
+	ports.NewWalletHandler(router, wallet, trx)
 
 	go func() {
 		c := make(chan os.Signal, 1)
